@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="5dp"
+    android:background="#4AB184"
+    android:orientation="vertical"
+    android:padding="6dp">
+
+    <TextView
+        android:id="@+id/riId"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="id"
+        tools:ignore="HardcodedText" />
+
+    <TextView
+        android:id="@+id/riFN"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="firstName"
+        tools:ignore="HardcodedText" />
+
+    <TextView
+        android:id="@+id/riLN"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="lastName"
+        tools:ignore="HardcodedText" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_weight="1"
+            android:src="@drawable/baseline_delete_24"
+            tools:ignore="ContentDescription" />
+
+        <ImageView
+            android:id="@+id/riUpdate"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_weight="1"
+            android:src="@drawable/baseline_system_update_alt_24"
+            tools:ignore="ContentDescription" />
+
+    </LinearLayout>
+
+
+</LinearLayout>
