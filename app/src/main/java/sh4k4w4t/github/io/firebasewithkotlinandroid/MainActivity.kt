@@ -2,6 +2,7 @@ package sh4k4w4t.github.io.firebasewithkotlinandroid
 
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.firebase.database.DataSnapshot
@@ -12,7 +13,7 @@ import com.google.firebase.database.ValueEventListener
 import sh4k4w4t.github.io.firebasewithkotlinandroid.databinding.ActivityMainBinding
 import kotlin.random.Random
 
-class MainActivity : AppCompatActivity(){
+class MainActivity : AppCompatActivity(),OnItemClickListener{
     private val TAG = "MainActivity"
     private lateinit var binding: ActivityMainBinding
     private var firebaseDatabase : FirebaseDatabase?= null
@@ -39,7 +40,7 @@ class MainActivity : AppCompatActivity(){
     }
 
     private fun initRecyclerView() {
-        userAdapter= MainActivityAdapter()
+        userAdapter= MainActivityAdapter(this)
         binding.apply {
             amRecyclerView.layoutManager = LinearLayoutManager(this@MainActivity)
             amRecyclerView.adapter = userAdapter
@@ -64,13 +65,17 @@ class MainActivity : AppCompatActivity(){
                     val user= User(id= singleUserId, first_name = singleUserFirstName, last_name = singleUserLastName)
                     dataList.add(user)
                 }
-                userAdapter?.setDataSet(dataList)
+                userAdapter?.setDataSet(dataList, this@MainActivity)
             }
 
             override fun onCancelled(error: DatabaseError) {
                 Log.d(TAG, "onCancelled: Cancel -> "+error.toException())
             }
         })
+    }
+
+    override fun onItemClick(user: User) {
+        Toast.makeText(this, "Selected ${user.first_name}", Toast.LENGTH_SHORT).show()
     }
 }
 

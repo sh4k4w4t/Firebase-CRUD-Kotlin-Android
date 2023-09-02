@@ -1,21 +1,25 @@
 package sh4k4w4t.github.io.firebasewithkotlinandroid
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 
 
-class MainActivityAdapter : RecyclerView.Adapter<MainActivityAdapter.ViewHolder>() {
+class MainActivityAdapter(private val listener: OnItemClickListener) : RecyclerView.Adapter<MainActivityAdapter.ViewHolder>() {
 
     private var dataSet = mutableListOf<User>()
+    private var context: Context? = null
 
     @SuppressLint("NotifyDataSetChanged")
-    fun setDataSet(list: MutableList<User>) {
+    fun setDataSet(list: MutableList<User>, context: Context) {
         this.dataSet = list
+        this.context = context
         notifyDataSetChanged()
     }
 
@@ -43,6 +47,9 @@ class MainActivityAdapter : RecyclerView.Adapter<MainActivityAdapter.ViewHolder>
         viewHolder.id.text = dataSet[position].id.toString()
         viewHolder.firstName.text = dataSet[position].first_name
         viewHolder.lastName.text = dataSet[position].last_name
+        viewHolder.updateImageView.setOnClickListener {
+            listener.onItemClick(dataSet[position])
+        }
     }
 
     override fun getItemCount() = dataSet.size
