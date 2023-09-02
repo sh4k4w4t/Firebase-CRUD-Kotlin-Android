@@ -12,7 +12,7 @@ import com.google.firebase.database.ValueEventListener
 import sh4k4w4t.github.io.firebasewithkotlinandroid.databinding.ActivityMainBinding
 import kotlin.random.Random
 
-class MainActivity : AppCompatActivity(),OnItemClick {
+class MainActivity : AppCompatActivity(){
     private val TAG = "MainActivity"
     private lateinit var binding: ActivityMainBinding
     private var firebaseDatabase : FirebaseDatabase?= null
@@ -20,9 +20,6 @@ class MainActivity : AppCompatActivity(),OnItemClick {
     private var dataList= mutableListOf<User>()
 
     private var userAdapter: MainActivityAdapter?=null
-
-    private var OnItemClick: OnItemClick?=null
-    private var dataController: DataController?=null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -75,12 +72,6 @@ class MainActivity : AppCompatActivity(),OnItemClick {
             }
         })
     }
-
-    override var onModelDataClick: User
-        get() = TODO("Not yet implemented")
-        set(value) {
-
-        }
 }
 
 

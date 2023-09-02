@@ -36,19 +36,13 @@ class MainActivityAdapter : RecyclerView.Adapter<MainActivityAdapter.ViewHolder>
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(viewGroup.context)
             .inflate(R.layout.row_items, viewGroup, false)
-
         return ViewHolder(view)
     }
 
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
-
         viewHolder.id.text = dataSet[position].id.toString()
         viewHolder.firstName.text = dataSet[position].first_name
         viewHolder.lastName.text = dataSet[position].last_name
-        viewHolder.updateImageView.setOnClickListener {
-            val dataPosition = dataSet.get(position)
-            DataController.instance?.itemClickInterface?.onModelDataClick = dataPosition
-        }
     }
 
     override fun getItemCount() = dataSet.size
