@@ -5,6 +5,7 @@
     android:layout_height="wrap_content"
     android:layout_margin="5dp"
     android:background="#4AB184"
+    android:id="@+id/fullRow"
     android:orientation="vertical"
     android:padding="6dp">
 
@@ -37,6 +38,7 @@
         android:orientation="horizontal">
 
         <ImageView
+            android:id="@+id/riDelete"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"

@@ -1,8 +1,8 @@
 package sh4k4w4t.github.io.firebasewithkotlinandroid
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.firebase.database.DataSnapshot
@@ -13,14 +13,14 @@ import com.google.firebase.database.ValueEventListener
 import sh4k4w4t.github.io.firebasewithkotlinandroid.databinding.ActivityMainBinding
 import kotlin.random.Random
 
-class MainActivity : AppCompatActivity(),OnItemClickListener{
+class MainActivity : AppCompatActivity(), OnItemClickListener {
     private val TAG = "MainActivity"
     private lateinit var binding: ActivityMainBinding
-    private var firebaseDatabase : FirebaseDatabase?= null
-    private var databaseReference : DatabaseReference?= null
-    private var dataList= mutableListOf<User>()
+    private var firebaseDatabase: FirebaseDatabase? = null
+    private var databaseReference: DatabaseReference? = null
+    private var dataList = mutableListOf<User>()
 
-    private var userAdapter: MainActivityAdapter?=null
+    private var userAdapter: MainActivityAdapter? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,6 +29,7 @@ class MainActivity : AppCompatActivity(),OnItemClickListener{
 
         firebaseDatabase = FirebaseDatabase.getInstance()
         databaseReference = firebaseDatabase?.getReference("data")
+        userAdapter = databaseReference?.let { MainActivityAdapter(this) }
 
         initRecyclerView()
 
@@ -40,7 +41,6 @@ class MainActivity : AppCompatActivity(),OnItemClickListener{
     }
 
     private fun initRecyclerView() {
-        userAdapter= MainActivityAdapter(this)
         binding.apply {
             amRecyclerView.layoutManager = LinearLayoutManager(this@MainActivity)
             amRecyclerView.adapter = userAdapter
@@ -48,9 +48,9 @@ class MainActivity : AppCompatActivity(),OnItemClickListener{
     }
 
     private fun saveData() {
-        val firstName= binding.firstName.text.toString()
-        val lastName= binding.lastName.text.toString()
-        val user= User(first_name = firstName, last_name = lastName)
+        val firstName = binding.firstName.text.toString()
+        val lastName = binding.lastName.text.toString()
+        val user = User(first_name = firstName, last_name = lastName)
         databaseReference?.child(generateRandomId(5))?.setValue(user)
     }
 
@@ -58,24 +58,38 @@ class MainActivity : AppCompatActivity(),OnItemClickListener{
         databaseReference?.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 dataList.clear()
-                for(ds in snapshot.children){
-                    val singleUserId= ds.key
-                    val singleUserFirstName= ds.child("first_name").value.toString()
-                    val singleUserLastName= ds.child("last_name").value.toString()
-                    val user= User(id= singleUserId, first_name = singleUserFirstName, last_name = singleUserLastName)
+                for (ds in snapshot.children) {
+                    val singleUserId = ds.key
+                    val singleUserFirstName = ds.child("first_name").value.toString()
+                    val singleUserLastName = ds.child("last_name").value.toString()
+                    val user = User(
+                        id = singleUserId,
+                        first_name = singleUserFirstName,
+                        last_name = singleUserLastName
+                    )
                     dataList.add(user)
                 }
                 userAdapter?.setDataSet(dataList, this@MainActivity)
             }
 
             override fun onCancelled(error: DatabaseError) {
-                Log.d(TAG, "onCancelled: Cancel -> "+error.toException())
+                Log.d(TAG, "onCancelled: Cancel -> " + error.toException())
             }
         })
     }
 
-    override fun onItemClick(user: User) {
-        Toast.makeText(this, "Selected ${user.first_name}", Toast.LENGTH_SHORT).show()
+
+    override fun onItemClickForUpdate(user: User) {
+        DataController.setSelectedUser(user)
+        val intent = Intent(this, UpdateActivity::class.java)
+        startActivity(intent)
+    }
+
+    override fun onItemClickForDelete(user: User) {
+        val selectedUser = user.id
+        if (selectedUser != null) {
+            databaseReference?.child(selectedUser)?.removeValue()
+        }
     }
 }
 

@@ -6,8 +6,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
-import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 
 
@@ -27,13 +27,17 @@ class MainActivityAdapter(private val listener: OnItemClickListener) : RecyclerV
         var id: TextView
         var firstName: TextView
         var lastName: TextView
-        var updateImageView: ImageView
+        var updateUserData: ImageView
+        var fullRow: LinearLayout
+        var deleteUserData: ImageView
 
         init {
             id = view.findViewById(R.id.riId)
             firstName = view.findViewById(R.id.riFN)
             lastName = view.findViewById(R.id.riLN)
-            updateImageView = view.findViewById(R.id.riUpdate)
+            updateUserData = view.findViewById(R.id.riUpdate)
+            deleteUserData = view.findViewById(R.id.riDelete)
+            fullRow = view.findViewById(R.id.fullRow)
         }
     }
 
@@ -47,8 +51,14 @@ class MainActivityAdapter(private val listener: OnItemClickListener) : RecyclerV
         viewHolder.id.text = dataSet[position].id.toString()
         viewHolder.firstName.text = dataSet[position].first_name
         viewHolder.lastName.text = dataSet[position].last_name
-        viewHolder.updateImageView.setOnClickListener {
-            listener.onItemClick(dataSet[position])
+        viewHolder.fullRow.setOnClickListener {
+            listener.onItemClickForUpdate(dataSet[position])
+        }
+        viewHolder.updateUserData.setOnClickListener {
+            listener.onItemClickForUpdate(dataSet[position])
+        }
+        viewHolder.deleteUserData.setOnClickListener {
+            listener.onItemClickForDelete(dataSet[position])
         }
     }
 
